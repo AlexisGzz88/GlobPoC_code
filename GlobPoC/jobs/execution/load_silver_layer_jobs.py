@@ -28,7 +28,7 @@ GITHUB_TOKEN = dbutils.secrets.get(scope = 'GlobPoC-scope', key='Github-Token')
 REPO_OWNER = "AlexisGzz88"
 REPO_NAME = "GlobPoC"
 # Reemplaza con la ruta del archivo dentro del repositorio
-FILE_PATH = "hired_employees - hired_employees.csv"
+FILE_PATH = "jobs - jobs.csv"
 
 # Construir la URL para acceder al archivo
 url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_PATH}"
@@ -60,10 +60,7 @@ else:
 #Se define el esquema de la tabla
 schema = StructType([
     StructField("id", IntegerType(), True),
-    StructField("name", StringType(), True),
-    StructField("datetime", StringType(), True),
-    StructField("department_id", IntegerType(), True),
-    StructField("job_id", IntegerType(), True)
+    StructField("job", StringType(), True)
 ])
 
 # COMMAND ----------
@@ -78,10 +75,10 @@ display(df_spark)
 
 
 # Ruta de la tabla Delta existente
-delta_table_path = "/mnt/portfolioagdl/process/GlobPoC/tb_hired_employees/"
+delta_table_path = "/mnt/portfolioagdl/process/GlobPoC/tb_jobs/"
 
 # Truncar la tabla
-spark.sql("TRUNCATE TABLE cl_silver.tb_hired_employees")
+spark.sql("TRUNCATE TABLE cl_silver.tb_jobs")
 
 # Tamaño del lote
 batch_size = 1000
@@ -111,7 +108,7 @@ for batch_num in range(num_batches):
 
 # MAGIC %sql
 # MAGIC select count(*)
-# MAGIC from cl_silver.tb_hired_employees
+# MAGIC from cl_silver.tb_jobs
 
 # COMMAND ----------
 
