@@ -1,0 +1,9 @@
+{
+	"name": "portfolioagadf",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "9c948459-1128-48ff-9848-2be51aab4a59",
+		"tenantId": "e333eb19-2f90-4388-b15c-ba47e933baff"
+	}
+}

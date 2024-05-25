@@ -1,0 +1,23 @@
+{
+	"name": "ds_adsl_fact",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_portfolioag",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Fact",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Fact_Pasteleria.xlsx",
+				"folderPath": "Sales",
+				"fileSystem": "inbound"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
