@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC/hired_employees/execution/load_silver_layer_hired_employees"
+					"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC/jobs/execution/load_silver_layer_jobs"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
