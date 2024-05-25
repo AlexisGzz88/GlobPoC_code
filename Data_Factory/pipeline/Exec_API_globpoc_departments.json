@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "load data hired employees",
+				"name": "load data departments",
 				"type": "DatabricksNotebook",
 				"dependsOn": [],
 				"policy": {
