@@ -1,0 +1,28 @@
+{
+	"name": "Exec_API_globpoc_hired_employees",
+	"properties": {
+		"activities": [
+			{
+				"name": "load data hired employees",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC/hired_employees/execution/load_silver_layer_hired_employees"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
