@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "load catalogs inbound layer",
+				"name": "load hired employees inbound layer",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -80,7 +80,7 @@
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "load catalogs inbound layer",
+						"activity": "load hired employees inbound layer",
 						"dependencyConditions": [
 							"Succeeded"
 						]
