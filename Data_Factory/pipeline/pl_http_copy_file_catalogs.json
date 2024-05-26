@@ -87,7 +87,7 @@
 			},
 			"sinkPath": {
 				"type": "string",
-				"defaultValue": "demo/GlobPoC/"
+				"defaultValue": "inbound/GlobPoC/"
 			}
 		},
 		"annotations": [],
