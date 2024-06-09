@@ -116,7 +116,7 @@ backup_path = "/mnt/portfolioagdl/archive/GlobPoc/tb_jobs"
 
 # COMMAND ----------
 
-df_spark.write.format("avro").save(backup_path)
+df_spark.write.format("avro").mode("overwrite").save(backup_path)
 
 # COMMAND ----------
 
