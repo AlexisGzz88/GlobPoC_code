@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "portfolioagadf"
+		},
+		"ls_adls_portfolioag_accountKey": {
+			"value": ""
+		},
+		"ls_adls_portfolioag_properties_typeProperties_url": {
+			"value": "https://portfolioagdl.dfs.core.windows.net/"
+		},
+		"ls_databricks_properties_typeProperties_existingClusterId": {
+			"value": "0510-173031-jo53j9x0"
+		},
+		"ls_http_file_properties_typeProperties_url": {
+			"value": "https://raw.githubusercontent.com"
+		},
+		"ls_http_multiplefiles_properties_typeProperties_url": {
+			"value": "@{linkedService().BaseURL}"
+		}
+	}
+}
