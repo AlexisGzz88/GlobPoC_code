@@ -122,18 +122,3 @@ df_spark.write.format("avro").save(backup_path)
 
 files = dbutils.fs.ls('dbfs:/mnt/portfolioagdl/archive/GlobPoc/')
 display(files)
-
-# COMMAND ----------
-
-path = "dbfs:/mnt/portfolioagdl/archive/GlobPoc/tb_departments/_started_1187461189320187594"
-
-if path.endswith(".csv"):
-    print("Probablemente es un archivo CSV.")
-elif path.endswith(".json"):
-    print("Probablemente es un archivo JSON.")
-elif path.endswith(".parquet"):
-    print("Probablemente es un archivo Parquet.")
-elif path.endswith(".avro"):
-    print("Probablemente es un archivo Avro.")
-else:
-    print("Extensión de archivo desconocida.")
