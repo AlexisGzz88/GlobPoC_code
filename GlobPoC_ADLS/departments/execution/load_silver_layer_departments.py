@@ -79,4 +79,13 @@ for batch_num in range(num_batches):
 
 # COMMAND ----------
 
+backup_path = "/mnt/portfolioagdl/archive/GlobPoc/tb_departments"
 
+# COMMAND ----------
+
+df_spark.write.format("avro").mode("overwrite").save(backup_path)
+
+# COMMAND ----------
+
+files = dbutils.fs.ls('dbfs:/mnt/portfolioagdl/archive/GlobPoc/')
+display(files)
