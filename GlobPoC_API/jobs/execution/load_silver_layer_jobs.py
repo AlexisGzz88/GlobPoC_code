@@ -17,6 +17,7 @@ import pandas as pd
 
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from pyspark.sql import DataFrame
+from io import StringIO
 
 # COMMAND ----------
 
@@ -47,7 +48,6 @@ if response.status_code == 200:
     # Convertir el contenido del archivo CSV en un DataFrame de Pandas
     file_content = response.text
     # Usar pd.read_csv para leer el contenido del archivo CSV en un DataFrame de Pandas
-    from io import StringIO
     data = StringIO(file_content)
     df = pd.read_csv(data)
     print(df.head())
@@ -65,6 +65,7 @@ schema = StructType([
 
 # COMMAND ----------
 
+#Se genera spark dataframe
 df_spark = spark.createDataFrame(df, schema=schema)
 
 # COMMAND ----------
@@ -107,15 +108,18 @@ for batch_num in range(num_batches):
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC --Validar si se inserto el total de los datos
 # MAGIC select count(*)
 # MAGIC from cl_silver.tb_jobs
 
 # COMMAND ----------
 
+#Ruta donde se guardara el backup de la tabla
 backup_path = "/mnt/portfolioagdl/archive/GlobPoc/tb_jobs"
 
 # COMMAND ----------
 
+#Se genera el backup al finalizar el proceso
 df_spark.write.format("avro").mode("overwrite").save(backup_path)
 
 # COMMAND ----------
