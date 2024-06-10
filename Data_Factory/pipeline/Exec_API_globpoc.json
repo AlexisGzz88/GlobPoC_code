@@ -5,8 +5,6 @@
 			{
 				"name": "Execute Departments Pipeline",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureInput": false
@@ -23,8 +21,6 @@
 			{
 				"name": "Execute Hired Employees Pipeline",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Execute Departments Pipeline",
@@ -48,8 +44,6 @@
 			{
 				"name": "Execute Job Pipeline",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Execute Hired Employees Pipeline",
