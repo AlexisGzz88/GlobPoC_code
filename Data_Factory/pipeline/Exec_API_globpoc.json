@@ -21,14 +21,7 @@
 			{
 				"name": "Execute Hired Employees Pipeline",
 				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Execute Departments Pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"secureInput": false
 				},
@@ -44,14 +37,7 @@
 			{
 				"name": "Execute Job Pipeline",
 				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Execute Hired Employees Pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"secureInput": false
 				},
