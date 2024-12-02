@@ -1,5 +1,5 @@
 {
-	"name": "pl_globpoc_jobs",
+	"name": "pl_mattel_walmart",
 	"properties": {
 		"activities": [
 			{
@@ -118,7 +118,7 @@
 			}
 		},
 		"folder": {
-			"name": "Globant_PoC"
+			"name": "Mattel"
 		},
 		"annotations": [],
 		"lastPublishTime": "2024-05-24T21:13:42Z"

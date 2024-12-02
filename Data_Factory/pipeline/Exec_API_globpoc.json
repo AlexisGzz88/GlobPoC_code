@@ -51,6 +51,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "Globant_PoC"
+		},
 		"annotations": []
 	}
 }

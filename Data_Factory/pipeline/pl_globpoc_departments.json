@@ -117,6 +117,9 @@
 				"defaultValue": "inbound/GlobPoC"
 			}
 		},
+		"folder": {
+			"name": "Globant_PoC"
+		},
 		"annotations": [],
 		"lastPublishTime": "2024-05-24T21:16:30Z"
 	},
