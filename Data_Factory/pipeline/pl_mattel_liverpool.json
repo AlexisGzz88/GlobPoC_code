@@ -1,9 +1,9 @@
 {
-	"name": "pl_mattel_rihappy",
+	"name": "pl_mattel_liverpool",
 	"properties": {
 		"activities": [
 			{
-				"name": "load data hired employees",
+				"name": "load silver layer liverpool",
 				"type": "DatabricksNotebook",
 				"dependsOn": [],
 				"policy": {
@@ -15,10 +15,37 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC_API/hired_employees/execution/load_silver_layer_hired_employees"
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/liverpool/execution/10.load_silver_layer"
 				},
 				"linkedServiceName": {
-					"referenceName": "ls_databricks",
+					"referenceName": "ls_mattel_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "load gold layer liverpool",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "load silver layer liverpool",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/liverpool/execution/20.load_gold_layer"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_mattel_databricks",
 					"type": "LinkedServiceReference"
 				}
 			}
