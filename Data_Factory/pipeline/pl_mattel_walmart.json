@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/liverpool/execution/10.load_silver_layer"
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/walmart/execution/10.load_silver_layer"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_mattel_databricks",
@@ -42,7 +42,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/liverpool/execution/20.load_gold_layer"
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/walmart/execution/20.load_gold_layer"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_mattel_databricks",
