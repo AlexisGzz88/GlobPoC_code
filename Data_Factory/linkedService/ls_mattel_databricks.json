@@ -1,0 +1,13 @@
+{
+	"name": "ls_mattel_databricks",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-3782454682132211.11.azuredatabricks.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/81b4219f-38fe-401d-825f-a5e32305c68f/resourceGroups/Portfolio_AlexisGonzalez/providers/Microsoft.Databricks/workspaces/Portfolio_AlexisGonzalez-ws",
+			"existingClusterId": "1127-042426-bnae40f9"
+		}
+	}
+}
