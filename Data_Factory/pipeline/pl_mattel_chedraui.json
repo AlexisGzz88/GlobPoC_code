@@ -1,0 +1,58 @@
+{
+	"name": "pl_mattel_chedraui",
+	"properties": {
+		"activities": [
+			{
+				"name": "load silver layer chedraui",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/chedraui/execution/10.load_silver_layer"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_mattel_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "load gold layer chedraui",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "load silver layer chedraui",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/chedraui/execution/20.load_gold_layer"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_mattel_databricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Mattel"
+		},
+		"annotations": []
+	}
+}
