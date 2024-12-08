@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/rihappy/execution/10.load_silver_layer"
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/rihappy/execution/10.load_silver_layer_opt"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_mattel_databricks",
