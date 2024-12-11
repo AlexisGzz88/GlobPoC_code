@@ -76,7 +76,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pl_mattel_rihappy",
+						"referenceName": "pl_mattel_chedraui",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
