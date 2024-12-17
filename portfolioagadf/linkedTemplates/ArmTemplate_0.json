@@ -11,13 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_portfolioag'"
 		},
+		"ls_mattel_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_mattel_databricks'"
+		},
 		"ls_adls_portfolioag_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://portfolioagdl.dfs.core.windows.net/"
 		},
 		"ls_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
-			"defaultValue": "0510-173031-jo53j9x0"
+			"defaultValue": "1127-042426-bnae40f9"
 		},
 		"ls_http_file_properties_typeProperties_url": {
 			"type": "string",
@@ -26,6 +30,10 @@
 		"ls_http_multiplefiles_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "@{linkedService().BaseURL}"
+		},
+		"ls_mattel_databricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1127-042426-bnae40f9"
 		}
 	},
 	"variables": {
@@ -101,6 +109,24 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_mattel_databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3782454682132211.11.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_mattel_databricks_accessToken')]"
+					},
+					"existingClusterId": "[parameters('ls_mattel_databricks_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Exec_API_globpoc_departments')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -129,6 +155,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Globant_PoC"
 				},
 				"annotations": []
 			},
@@ -166,6 +195,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Globant_PoC"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -202,10 +234,343 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Globant_PoC"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_databricks')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_mattel_chedraui')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "load silver layer chedraui",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/chedraui/execution/10.load_silver_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "load gold layer chedraui",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "load silver layer chedraui",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/chedraui/execution/20.load_gold_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Mattel"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mattel_databricks')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_mattel_liverpool')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "load silver layer liverpool",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/liverpool/execution/10.load_silver_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "load gold layer liverpool",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "load silver layer liverpool",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/liverpool/execution/20.load_gold_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Mattel"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mattel_databricks')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_mattel_rihappy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "load silver layer rihappy",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/rihappy/execution/10.load_silver_layer_opt"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "load gold layer rihappy",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "load silver layer rihappy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/rihappy/execution/20.load_gold_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Mattel"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mattel_databricks')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_mattel_soriana')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "load silver layer soriana",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/soriana/execution/10.load_silver_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "load gold layer soriana",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "load silver layer soriana",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/soriana/execution/20.load_gold_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Mattel"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mattel_databricks')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_mattel_walmart')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "load silver layer walmart",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/walmart/execution/10.load_silver_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "load gold layer walmart",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "load silver layer walmart",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/walmart/execution/20.load_gold_layer"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Mattel"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mattel_databricks')]"
 			]
 		},
 		{
@@ -416,677 +781,42 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Exec_API_globpoc')]",
+			"name": "[concat(parameters('factoryName'), '/pl_mattel_push_gbq')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute Departments Pipeline",
-						"type": "ExecutePipeline",
+						"name": "push GBQ",
+						"type": "DatabricksNotebook",
 						"dependsOn": [],
 						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
 							"secureInput": false
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Exec_API_globpoc_departments",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Hired Employees Pipeline",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
+							"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/push_gbq/Push_GBQ"
 						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Exec_API_globpoc_hired_employees",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Job Pipeline",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Exec_API_globpoc_jobs",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
+						"linkedServiceName": {
+							"referenceName": "ls_mattel_databricks",
+							"type": "LinkedServiceReference"
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Mattel"
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Exec_API_globpoc_departments')]",
-				"[concat(variables('factoryId'), '/pipelines/Exec_API_globpoc_hired_employees')]",
-				"[concat(variables('factoryId'), '/pipelines/Exec_API_globpoc_jobs')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_globpoc_departments')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "load departments inbound layer",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_http_file",
-								"type": "DatasetReference",
-								"parameters": {
-									"sourceRelativeURL": {
-										"value": "@pipeline().parameters.sourceRelativeURL",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_sink_http_files",
-								"type": "DatasetReference",
-								"parameters": {
-									"sinkFileName": {
-										"value": "@pipeline().parameters.sinkFileName",
-										"type": "Expression"
-									},
-									"sinkPath": {
-										"value": "@pipeline().parameters.sinkPath",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "load data departments",
-						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "load departments inbound layer",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC_ADLS/departments/execution/load_silver_layer_departments"
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_databricks",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"sourceRelativeURL": {
-						"type": "string",
-						"defaultValue": "AlexisGzz88/ProjectAzure/main/GlobPoC/departments.csv"
-					},
-					"sinkFileName": {
-						"type": "string",
-						"defaultValue": "departments.csv"
-					},
-					"sinkPath": {
-						"type": "string",
-						"defaultValue": "inbound/GlobPoC"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-24T21:16:30Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_http_file')]",
-				"[concat(variables('factoryId'), '/datasets/ds_sink_http_files')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_databricks')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_globpoc_hired_employees')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "load hired employees inbound layer",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_http_file",
-								"type": "DatasetReference",
-								"parameters": {
-									"sourceRelativeURL": {
-										"value": "@pipeline().parameters.sourceRelativeURL",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_sink_http_files",
-								"type": "DatasetReference",
-								"parameters": {
-									"sinkFileName": {
-										"value": "@pipeline().parameters.sinkFileName",
-										"type": "Expression"
-									},
-									"sinkPath": {
-										"value": "@pipeline().parameters.sinkPath",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "load data hired employees",
-						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "load hired employees inbound layer",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC_ADLS/hired_employees/execution/load_silver_layer_hired_employees"
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_databricks",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"sourceRelativeURL": {
-						"type": "string",
-						"defaultValue": "AlexisGzz88/ProjectAzure/main/GlobPoC/hired_employees.csv"
-					},
-					"sinkFileName": {
-						"type": "string",
-						"defaultValue": "hired_employees.csv"
-					},
-					"sinkPath": {
-						"type": "string",
-						"defaultValue": "inbound/GlobPoC"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-24T21:16:30Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_http_file')]",
-				"[concat(variables('factoryId'), '/datasets/ds_sink_http_files')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_databricks')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_globpoc_jobs')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "load catalogs inbound layer",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_http_file",
-								"type": "DatasetReference",
-								"parameters": {
-									"sourceRelativeURL": {
-										"value": "@pipeline().parameters.sourceRelativeURL",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_sink_http_files",
-								"type": "DatasetReference",
-								"parameters": {
-									"sinkFileName": {
-										"value": "@pipeline().parameters.sinkFileName",
-										"type": "Expression"
-									},
-									"sinkPath": {
-										"value": "@pipeline().parameters.sinkPath",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "load jobs inbound layer",
-						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "load catalogs inbound layer",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Repos/alexis182@hotmail.com/GlobPoC_code/GlobPoC_ADLS/jobs/execution/load_silver_layer_jobs"
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_databricks",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"sourceRelativeURL": {
-						"type": "string",
-						"defaultValue": "AlexisGzz88/ProjectAzure/main/GlobPoC/jobs.csv"
-					},
-					"sinkFileName": {
-						"type": "string",
-						"defaultValue": "jobs.csv"
-					},
-					"sinkPath": {
-						"type": "string",
-						"defaultValue": "inbound/GlobPoC/"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-24T21:13:42Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_http_file')]",
-				"[concat(variables('factoryId'), '/datasets/ds_sink_http_files')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_databricks')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_http_copy_file_catalogs')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "load catalogs inbound layer",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_http_file",
-								"type": "DatasetReference",
-								"parameters": {
-									"sourceRelativeURL": {
-										"value": "@pipeline().parameters.sourceRelativeURL",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_sink_http_files",
-								"type": "DatasetReference",
-								"parameters": {
-									"sinkFileName": {
-										"value": "@pipeline().parameters.sinkFileName",
-										"type": "Expression"
-									},
-									"sinkPath": {
-										"value": "@pipeline().parameters.sinkPath",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"sourceRelativeURL": {
-						"type": "string",
-						"defaultValue": "AlexisGzz88/ProjectAzure/main/GlobPoC/jobs.csv"
-					},
-					"sinkFileName": {
-						"type": "string",
-						"defaultValue": "jobs.csv"
-					},
-					"sinkPath": {
-						"type": "string",
-						"defaultValue": "inbound/GlobPoC/"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-24T21:12:29Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_http_file')]",
-				"[concat(variables('factoryId'), '/datasets/ds_sink_http_files')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_http_copy_file_sales')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "load sales inbound layer",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_http_file",
-								"type": "DatasetReference",
-								"parameters": {
-									"sourceRelativeURL": {
-										"value": "@pipeline().parameters.sourceRelativeURL",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_sink_http_sales_file",
-								"type": "DatasetReference",
-								"parameters": {
-									"sourceRelativeURL": {
-										"value": "@pipeline().parameters.sourceRelativeURL",
-										"type": "Expression"
-									},
-									"sinkFileName": {
-										"value": "@pipeline().parameters.sinkFileName",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"sourceRelativeURL": {
-						"type": "string",
-						"defaultValue": "AlexisGzz88/ProjectAzure/main/Fact/Fact_Pasteleria.csv"
-					},
-					"sinkFileName": {
-						"type": "string",
-						"defaultValue": "Fact_Pasteleria.csv"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-02-05T19:31:37Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_http_file')]",
-				"[concat(variables('factoryId'), '/datasets/ds_sink_http_sales_file')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_mattel_databricks')]"
 			]
 		}
 	]

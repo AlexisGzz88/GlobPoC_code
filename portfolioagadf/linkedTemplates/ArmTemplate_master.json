@@ -11,13 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_portfolioag'"
 		},
+		"ls_mattel_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_mattel_databricks'"
+		},
 		"ls_adls_portfolioag_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://portfolioagdl.dfs.core.windows.net/"
 		},
 		"ls_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
-			"defaultValue": "0510-173031-jo53j9x0"
+			"defaultValue": "1127-042426-bnae40f9"
 		},
 		"ls_http_file_properties_typeProperties_url": {
 			"type": "string",
@@ -26,6 +30,10 @@
 		"ls_http_multiplefiles_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "@{linkedService().BaseURL}"
+		},
+		"ls_mattel_databricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1127-042426-bnae40f9"
 		},
 		"containerUri": {
 			"type": "string",
@@ -43,7 +51,7 @@
 		{
 			"name": "portfolioagadf_ArmTemplate_0",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
+			"apiVersion": "2024-03-01",
 			"properties": {
 				"mode": "incremental",
 				"templateLink": {
@@ -57,6 +65,9 @@
 					"ls_adls_portfolioag_accountKey": {
 						"value": "[parameters('ls_adls_portfolioag_accountKey')]"
 					},
+					"ls_mattel_databricks_accessToken": {
+						"value": "[parameters('ls_mattel_databricks_accessToken')]"
+					},
 					"ls_adls_portfolioag_properties_typeProperties_url": {
 						"value": "[parameters('ls_adls_portfolioag_properties_typeProperties_url')]"
 					},
@@ -68,10 +79,33 @@
 					},
 					"ls_http_multiplefiles_properties_typeProperties_url": {
 						"value": "[parameters('ls_http_multiplefiles_properties_typeProperties_url')]"
+					},
+					"ls_mattel_databricks_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_mattel_databricks_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "portfolioagadf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'portfolioagadf_ArmTemplate_0')]"
+			]
 		}
 	]
 }
