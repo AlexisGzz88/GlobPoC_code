@@ -1,0 +1,31 @@
+{
+	"name": "pl_mattel_push_gbq",
+	"properties": {
+		"activities": [
+			{
+				"name": "push GBQ",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/alexis182@hotmail.com/Mattel_Project/push_gbq/Push_GBQ"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_mattel_databricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Mattel"
+		},
+		"annotations": []
+	}
+}
